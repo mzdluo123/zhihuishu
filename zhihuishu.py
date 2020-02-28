@@ -41,15 +41,13 @@ def group_list(uuid: str) -> list:
     return result
 
 
-def sign_list(uuid: str, groupId: str) -> list:
+def sign_list(uuid: str, groupId: str) -> dict:
     # 签到列表
-    rep = requests.post('https://ctapp.zhihuishu.com/app-commonserv-classroomtools/commonChat/sign/checkSigninList',
-                        data={'groupId': groupId, 'uuid': uuid})
-    result = []
+    rep = requests.post(
+        'https://ctapp.zhihuishu.com/app-commonserv-classroomtools/commonChat/sign/chatCheckStudentHistory',
+        data={'groupId': groupId, 'uuid': uuid, "sUuid": uuid, 'isAddMeetingCourseSign': 1})
     # print(rep.text)
-    for i in rep.json()['rt']['signinList']:
-        result.append(i['checkId'])
-    return result
+    return rep.json()['rt']
 
 
 def sign(checkId: str, uuid: str, gesture: str) -> Tuple[bool, str]:
